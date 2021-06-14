@@ -28,7 +28,7 @@ export class Monster extends Character {
     if (this.movementPoints > 0) {
       const px = this.dungeon.player.x;
       const py = this.dungeon.player.y;
-      const grid = new PF.Grid(this.dungeon.floor.data);
+      const grid = new PF.Grid(this.dungeon.floor.toPathfindingMatrix());
       const finder = new PF.AStarFinder();
       const path = finder.findPath(oldX, oldY, px, py, grid);
 
