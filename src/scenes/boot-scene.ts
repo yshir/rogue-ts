@@ -1,12 +1,10 @@
 import { WorldScene } from './world-scene';
 
 export class BootScene extends Phaser.Scene {
-  constructor() {
-    super({ key: BootScene.key });
-  }
+  public static KEY = 'BootScene';
 
-  static get key(): string {
-    return 'BootScene';
+  constructor() {
+    super({ key: BootScene.KEY });
   }
 
   preload(): void {
@@ -19,6 +17,6 @@ export class BootScene extends Phaser.Scene {
   }
 
   create(): void {
-    this.scene.start(WorldScene.key);
+    this.scene.start(WorldScene.KEY);
   }
 }

@@ -4,15 +4,13 @@ import { Player } from '@src/objects/player';
 import { TurnManager } from '@src/turn-manager';
 
 export class WorldScene extends Phaser.Scene {
+  public static KEY = 'WorldScene';
+
   private turnManager: TurnManager;
 
   constructor() {
-    super({ key: WorldScene.key });
+    super({ key: WorldScene.KEY });
     this.turnManager = new TurnManager();
-  }
-
-  static get key(): string {
-    return 'WorldScene';
   }
 
   preload(): void {
