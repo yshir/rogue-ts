@@ -1,3 +1,5 @@
+import { room1 } from '@src/data/room1';
+
 export class WorldScene extends Phaser.Scene {
   constructor() {
     super({ key: WorldScene.key });
@@ -17,40 +19,19 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private renderTilemap(): void {
-    // define the map (0: floor, 1: wall)
-    const dungeon = [
-      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-      [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-      [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-      [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-      [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-      [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-      [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-      [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-      [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    ];
-
-    // asset index
+    // convert the walls and floors
     const wall = 554;
     const floor = 0;
+    const room = room1.map(row => row.map(col => (col === 1 ? wall : floor)));
 
-    // the size of a tile in pixel
+    // render the tilemap
     const tileSize = 16;
-
-    // make tilemap
     const map = this.make.tilemap({
-      data: dungeon.map(row => {
-        return row.map(col => {
-          return col === 1 ? wall : floor;
-        });
-      }),
+      data: room,
       tileWidth: tileSize,
       tileHeight: tileSize,
     });
     const tileset = map.addTilesetImage('tiles', 'tiles', tileSize, tileSize, 0, 1);
-
-    // render tilemap layer
     map.createLayer(0, tileset, 0, 0);
   }
 }

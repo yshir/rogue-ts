@@ -31,6 +31,7 @@ const config = {
     extensions: ['.ts', '.js'],
     alias: {
       phaser: path.join(__dirname, '/node_modules/phaser/dist/phaser.js'),
+      '@src': path.join(__dirname, 'src'),
     },
   },
 };
