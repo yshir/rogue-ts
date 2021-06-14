@@ -1,4 +1,7 @@
-import { Character } from './character';
+import { Character } from '@src/objects/character';
+import { Wall } from '@src/objects/wall';
+
+const CAN_DIG = true;
 
 export class Player extends Character {
   private map: Phaser.Tilemaps.Tilemap;
@@ -19,6 +22,10 @@ export class Player extends Character {
 
   static get sprite(): number {
     return 29;
+  }
+
+  canDig(): boolean {
+    return CAN_DIG;
   }
 
   move(dx: number, dy: number): void {
@@ -55,11 +62,12 @@ export class Player extends Character {
       }
     }
 
-    // wall collision check
     const destination = this.map.getTileAt(this.x, this.y);
-    if (destination.index === 554) {
-      this.x = x;
-      this.y = y;
+    if (destination.index === Wall.sprite) {
+      if (!this.canDig()) {
+        this.x = x;
+        this.y = y;
+      }
     }
 
     // tile movement code
