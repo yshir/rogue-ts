@@ -4,5 +4,13 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
-  "cSpell.words": ["anims", "dragonblue", "dragonorrange", "spritesheet", "tilemap", "tileset"]
+  "cSpell.words": [
+    "anims",
+    "dragonblue",
+    "dragonorrange",
+    "spritesheet",
+    "tilemap",
+    "tilemaps",
+    "tileset"
+  ]
 }
