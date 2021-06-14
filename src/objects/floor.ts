@@ -4,10 +4,14 @@ export class Floor {
   public static FLOOR_WALL = 1;
   public static FLOOR_TILE = 0;
 
-  private data: number[][];
+  private _data: number[][];
 
   constructor(data: number[][]) {
-    this.data = data;
+    this._data = data;
+  }
+
+  public get data(): number[][] {
+    return this._data;
   }
 
   public isWall(x: number, y: number): boolean {

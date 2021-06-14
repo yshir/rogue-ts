@@ -3,11 +3,14 @@ import { TILE_SIZE } from '@src/data/tileset-meta';
 import { Floor } from '@src/objects/floor';
 
 import { Character } from './character';
+import { Player } from './player';
 
 export class Dungeon {
   private scene: Phaser.Scene;
-  private floor: Floor;
   private tilemapLayer: Phaser.Tilemaps.TilemapLayer;
+  private _player?: Player;
+
+  public floor: Floor;
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
@@ -24,6 +27,18 @@ export class Dungeon {
 
   public isWalkable(x: number, y: number): boolean {
     return this.floor.isWalkable(x, y);
+  }
+
+  public get player(): Player {
+    if (typeof this._player === 'undefined') {
+      throw new Error('player is not initialized yet');
+    }
+    return this._player;
+  }
+
+  public setPlayer(player: Player): void {
+    this._player = player;
+    this.setCharacter(player);
   }
 
   public setCharacter(character: Character): void {

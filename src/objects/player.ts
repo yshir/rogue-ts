@@ -14,7 +14,7 @@ export class Player extends Character {
     this.dungeon = dungeon;
     this.movementPoints = 1;
 
-    this.dungeon.setCharacter(this);
+    this.dungeon.setPlayer(this);
   }
 
   refresh(): void {

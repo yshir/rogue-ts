@@ -1,4 +1,5 @@
 import { Dungeon } from '@src/objects/dungeon';
+import { Monster } from '@src/objects/monster';
 import { Player } from '@src/objects/player';
 import { TurnManager } from '@src/turn-manager';
 
@@ -19,14 +20,14 @@ export class WorldScene extends Phaser.Scene {
   }
 
   create(): void {
-    const dungeon = new Dungeon(this);
-
     const cursors = this.input.keyboard.createCursorKeys();
+
+    const dungeon = new Dungeon(this);
     const player = new Player(cursors, dungeon, 15, 15);
-    // const player2 = new Player(cursors, dungeon, 18, 18);
+    const monster = new Monster(dungeon, 70, 8);
 
     this.turnManager.addCharacter(player);
-    // this.turnManager.addCharacter(player2);
+    this.turnManager.addCharacter(monster);
   }
 
   update(): void {

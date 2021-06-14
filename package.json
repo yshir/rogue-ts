@@ -30,6 +30,7 @@
   "homepage": "https://github.com/yshir/rogue-ts#readme",
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^2.0.2",
+    "@types/pathfinding": "^0.0.4",
     "@typescript-eslint/eslint-plugin": "^4.26.1",
     "@typescript-eslint/parser": "^4.26.1",
     "eslint": "^7.28.0",
@@ -46,6 +47,7 @@
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
+    "pathfinding": "^0.4.18",
     "phaser": "^3.55.2"
   }
 }
