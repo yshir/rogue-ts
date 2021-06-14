@@ -1,18 +1,24 @@
-import { KEY_WORLD_SCENE } from './world-scene';
+import { WorldScene } from './world-scene';
 
 export class BootScene extends Phaser.Scene {
   constructor() {
-    super({ key: KEY_BOOT_SCENE });
+    super({ key: BootScene.key });
+  }
+
+  static get key(): string {
+    return 'BootScene';
   }
 
   preload(): void {
-    console.log('boot/preload');
+    // load assets
+    this.load.spritesheet('tiles', 'assets/tileset.png', {
+      frameWidth: 16,
+      frameHeight: 16,
+      spacing: 1,
+    });
   }
 
   create(): void {
-    console.log('boot/create');
-    this.scene.start(KEY_WORLD_SCENE);
+    this.scene.start(WorldScene.key);
   }
 }
-
-export const KEY_BOOT_SCENE = 'BootScene';
