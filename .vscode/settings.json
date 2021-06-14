@@ -11,6 +11,7 @@
     "spritesheet",
     "tilemap",
     "tilemaps",
-    "tileset"
+    "tileset",
+    "tweens"
   ]
 }

@@ -1,14 +1,12 @@
 import { Character } from '@src/objects/character';
 
-const INTERVAL = 120;
-
 export class TurnManager {
   private characters: Set<Character>;
-  private lastCall: number;
+  private currentIdx: number;
 
   constructor() {
     this.characters = new Set();
-    this.lastCall = Date.now();
+    this.currentIdx = 0;
   }
 
   addCharacter(character: Character): void {
@@ -21,19 +19,22 @@ export class TurnManager {
 
   refresh(): void {
     this.characters.forEach(c => c.refresh());
+    this.currentIdx = 0;
   }
 
   turn(): void {
-    const now = Date.now();
-    const limit = this.lastCall + INTERVAL;
-    if (now > limit) {
-      for (const c of this.characters) {
-        if (!c.over()) {
-          c.turn();
-          break;
-        }
+    if (this.characters.size > 0) {
+      const characters = [...this.characters];
+      const character = characters[this.currentIdx];
+      if (!character) {
+        throw new Error('character is undefined unexpectedly');
       }
-      this.lastCall = Date.now();
+
+      if (!character.over()) {
+        character.turn();
+      } else {
+        this.currentIdx++;
+      }
     }
   }
 
