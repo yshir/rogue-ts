@@ -1,51 +1,59 @@
 import { FLOOR1 } from '@src/data/floor1';
 import { TILE_SIZE } from '@src/data/tileset-meta';
 import { Floor } from '@src/objects/floor';
+import { TurnManager } from '@src/turn-manager';
 
 import { Character } from './character';
+import { Monster } from './monster';
 import { Player } from './player';
 
 export class Dungeon {
-  private scene: Phaser.Scene;
-  private tilemapLayer: Phaser.Tilemaps.TilemapLayer;
-  private _player?: Player;
-
-  public floor: Floor;
+  public readonly scene: Phaser.Scene;
+  public readonly tilemapLayer: Phaser.Tilemaps.TilemapLayer;
+  public readonly turnManager: TurnManager;
+  public readonly player: Player;
+  public readonly floor: Floor;
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
     this.floor = new Floor(FLOOR1);
+    this.turnManager = new TurnManager();
 
+    this.tilemapLayer = this.createTilemapLayer();
+    this.player = this.createPlayer(15, 15, 'Player');
+  }
+
+  public createTilemapLayer(): Phaser.Tilemaps.TilemapLayer {
     const map = this.scene.make.tilemap({
       data: this.floor.toTilemapData(),
       tileWidth: TILE_SIZE,
       tileHeight: TILE_SIZE,
     });
     const tileset = map.addTilesetImage('tiles', 'tiles', TILE_SIZE, TILE_SIZE, 0, 1);
-    this.tilemapLayer = map.createLayer(0, tileset, 0, 0);
+    return map.createLayer(0, tileset, 0, 0);
   }
 
-  public isWalkable(x: number, y: number): boolean {
-    return this.floor.isWalkable(x, y);
-  }
-
-  public get player(): Player {
-    if (typeof this._player === 'undefined') {
-      throw new Error('player is not initialized yet');
-    }
-    return this._player;
-  }
-
-  public setPlayer(player: Player): void {
-    this._player = player;
+  public createPlayer(x: number, y: number, name: string): Player {
+    const player = new Player(this, x, y, name);
     this.setCharacter(player);
+    return player;
+  }
+
+  public createMonster(x: number, y: number, name: string): Monster {
+    const monster = new Monster(this, x, y, name);
+    this.setCharacter(monster);
+    return monster;
   }
 
   public setCharacter(character: Character): void {
+    // register to tilemap
     const x = this.tilemapLayer.tileToWorldX(character.x);
     const y = this.tilemapLayer.tileToWorldY(character.y);
     character.sprite = this.scene.add.sprite(x, y, 'tiles', character.frame);
     character.sprite.setOrigin(0);
+
+    // register to turn manager
+    this.turnManager.addCharacter(character);
   }
 
   public moveCharacterTo(character: Character, x: number, y: number): void {
@@ -60,7 +68,11 @@ export class Dungeon {
       x: this.tilemapLayer.tileToWorldX(x),
       y: this.tilemapLayer.tileToWorldY(y),
       ease: 'Power2',
-      duration: 200,
+      duration: 100,
     });
+  }
+
+  public isWalkable(x: number, y: number): boolean {
+    return this.floor.isWalkable(x, y);
   }
 }

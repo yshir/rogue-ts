@@ -3,25 +3,24 @@ import { Character } from '@src/objects/character';
 import { Dungeon } from '@src/objects/dungeon';
 
 export class Player extends Character {
-  private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
-  private dungeon: Dungeon;
+  private readonly cursors: Phaser.Types.Input.Keyboard.CursorKeys;
+  private readonly dungeon: Dungeon;
   private movementPoints: number;
   // private actionPoints: number;
   // private healthPoints: number;
 
   public name: string;
 
-  constructor(cursors: Phaser.Types.Input.Keyboard.CursorKeys, dungeon: Dungeon, x: number, y: number, name: string) {
+  constructor(dungeon: Dungeon, x: number, y: number, name: string) {
     super(x, y, FRAME.player);
 
-    this.cursors = cursors;
     this.dungeon = dungeon;
     this.name = name;
     this.movementPoints = 1;
     // this.actionPoints = 1;
     // this.healthPoints = 15;
 
-    this.dungeon.setPlayer(this);
+    this.cursors = this.dungeon.scene.input.keyboard.createCursorKeys();
   }
 
   refresh(): void {

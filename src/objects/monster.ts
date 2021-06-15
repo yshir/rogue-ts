@@ -6,10 +6,10 @@ import { Character } from '@src/objects/character';
 import { Dungeon } from './dungeon';
 
 export class Monster extends Character {
-  private dungeon: Dungeon;
+  private readonly dungeon: Dungeon;
   private movementPoints: number;
   private actionPoints: number;
-  // private healthPoints: number;
+  // private  healthPoints: number;
 
   public name: string;
 
@@ -20,8 +20,6 @@ export class Monster extends Character {
     this.movementPoints = 1;
     this.actionPoints = 1;
     // this.healthPoints = 1;
-
-    this.dungeon.setCharacter(this);
   }
 
   public refresh(): void {

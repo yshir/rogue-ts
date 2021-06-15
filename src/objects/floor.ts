@@ -1,10 +1,10 @@
 import { FRAME } from '@src/data/tileset-meta';
 
 export class Floor {
-  public static FLOOR_WALL = 1;
-  public static FLOOR_TILE = 0;
+  public static readonly FLOOR_WALL = 1;
+  public static readonly FLOOR_TILE = 0;
 
-  private data: number[][];
+  private readonly data: number[][];
 
   constructor(data: number[][]) {
     this.data = data;
