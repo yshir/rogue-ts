@@ -6,20 +6,17 @@ import { Character } from '@src/objects/character';
 import { Dungeon } from './dungeon';
 
 export class Monster extends Character {
-  private readonly dungeon: Dungeon;
-  private movementPoints: number;
-  private actionPoints: number;
-  // private  healthPoints: number;
-
-  public name: string;
-
   constructor(dungeon: Dungeon, x: number, y: number, name: string) {
-    super(x, y, FRAME.monster);
-    this.dungeon = dungeon;
-    this.name = name;
-    this.movementPoints = 1;
-    this.actionPoints = 1;
-    // this.healthPoints = 1;
+    super({
+      dungeon,
+      x,
+      y,
+      name,
+      frame: FRAME.monster,
+      movementPoints: 1,
+      actionPoints: 1,
+      healthPoints: 1,
+    });
   }
 
   public refresh(): void {

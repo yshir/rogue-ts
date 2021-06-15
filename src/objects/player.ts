@@ -4,21 +4,18 @@ import { Dungeon } from '@src/objects/dungeon';
 
 export class Player extends Character {
   private readonly cursors: Phaser.Types.Input.Keyboard.CursorKeys;
-  private readonly dungeon: Dungeon;
-  private movementPoints: number;
-  // private actionPoints: number;
-  // private healthPoints: number;
-
-  public name: string;
 
   constructor(dungeon: Dungeon, x: number, y: number, name: string) {
-    super(x, y, FRAME.player);
-
-    this.dungeon = dungeon;
-    this.name = name;
-    this.movementPoints = 1;
-    // this.actionPoints = 1;
-    // this.healthPoints = 15;
+    super({
+      dungeon,
+      x,
+      y,
+      name,
+      frame: FRAME.player,
+      movementPoints: 1,
+      actionPoints: 1,
+      healthPoints: 15,
+    });
 
     this.cursors = this.dungeon.scene.input.keyboard.createCursorKeys();
   }
@@ -35,7 +32,7 @@ export class Player extends Character {
     let newY = this.y;
     let moved = false;
 
-    if (this.movementPoints > 0) {
+    if (this.movementPoints > 0 && !this.moving) {
       if (this.cursors.left.isDown) {
         newX -= 1;
         moved = true;
