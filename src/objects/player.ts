@@ -52,7 +52,7 @@ export class Player extends Character {
 
       if (moved) {
         this.movementPoints -= 1;
-        if (!this.dungeon.isWalkable(newX, newY)) {
+        if (!this.dungeon.isWalkableTile(newX, newY)) {
           newX = oldX;
           newY = oldY;
         }

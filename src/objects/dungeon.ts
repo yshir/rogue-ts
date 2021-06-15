@@ -72,7 +72,7 @@ export class Dungeon {
     });
   }
 
-  public isWalkable(x: number, y: number): boolean {
-    return this.floor.isWalkable(x, y);
+  public isWalkableTile(x: number, y: number): boolean {
+    return this.floor.isWalkableTile(x, y);
   }
 }

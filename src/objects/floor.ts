@@ -18,7 +18,7 @@ export class Floor {
     return this.data[y]?.[x] === Floor.FLOOR_TILE;
   }
 
-  public isWalkable(x: number, y: number): boolean {
+  public isWalkableTile(x: number, y: number): boolean {
     return !this.isWall(x, y);
   }
 
