@@ -32,17 +32,20 @@ export class Player extends Character {
     let newY = this.y;
     let moved = false;
 
-    if (this.movementPoints > 0 && !this.moving) {
+    if (this.movementPoints > 0) {
       if (this.cursors.left.isDown) {
         newX -= 1;
         moved = true;
-      } else if (this.cursors.right.isDown) {
+      }
+      if (this.cursors.right.isDown) {
         newX += 1;
         moved = true;
-      } else if (this.cursors.up.isDown) {
+      }
+      if (this.cursors.up.isDown) {
         newY -= 1;
         moved = true;
-      } else if (this.cursors.down.isDown) {
+      }
+      if (this.cursors.down.isDown) {
         newY += 1;
         moved = true;
       }

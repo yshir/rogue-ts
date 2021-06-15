@@ -1,12 +1,14 @@
 import { Dungeon } from '@src/objects/dungeon';
+import { TurnManager } from '@src/turn-manager';
 
 export class WorldScene extends Phaser.Scene {
   public static KEY = 'WorldScene';
 
-  private _dungeon?: Dungeon;
+  private turnManager: TurnManager;
 
   constructor() {
     super({ key: WorldScene.KEY });
+    this.turnManager = new TurnManager();
   }
 
   preload(): void {
@@ -14,20 +16,15 @@ export class WorldScene extends Phaser.Scene {
   }
 
   create(): void {
-    this._dungeon = new Dungeon(this);
-    this._dungeon.createMonster(70, 8, 'Skelton');
-    this._dungeon.createMonster(30, 8, 'Skelton');
+    const dungeon = new Dungeon(this, this.turnManager);
+    dungeon.createMonster(70, 8, 'Skelton');
+    dungeon.createMonster(30, 8, 'Skelton');
   }
 
   update(): void {
-    if (this.dungeon.turnManager.over()) {
-      this.dungeon.turnManager.refresh();
+    if (this.turnManager.over()) {
+      this.turnManager.refresh();
     }
-    this.dungeon.turnManager.turn();
-  }
-
-  public get dungeon(): Dungeon {
-    if (!this._dungeon) throw new Error('dungeon not initialized');
-    return this._dungeon;
+    this.turnManager.turn();
   }
 }

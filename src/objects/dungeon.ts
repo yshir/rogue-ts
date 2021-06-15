@@ -14,10 +14,10 @@ export class Dungeon {
   public readonly player: Player;
   public readonly floor: Floor;
 
-  constructor(scene: Phaser.Scene) {
+  constructor(scene: Phaser.Scene, turnManager: TurnManager) {
     this.scene = scene;
     this.floor = new Floor(FLOOR1);
-    this.turnManager = new TurnManager();
+    this.turnManager = turnManager;
 
     this.tilemapLayer = this.createTilemapLayer();
     this.player = this.createPlayer(15, 15, 'Player');
