@@ -11,11 +11,19 @@ export abstract class Character {
   public actionPoints: number;
   public healthPoints: number;
   public moving: boolean;
+  public tweens: number;
   public sprite?: Phaser.GameObjects.Sprite;
 
+  // turn
   abstract refresh(): void;
   abstract over(): boolean;
   abstract turn(): void;
+
+  // combat
+  abstract attack(): number;
+
+  // callback
+  abstract onDestroy(): void;
 
   constructor({
     dungeon,
@@ -45,5 +53,6 @@ export abstract class Character {
     this.actionPoints = actionPoints;
     this.healthPoints = healthPoints;
     this.moving = false;
+    this.tweens = 0;
   }
 }

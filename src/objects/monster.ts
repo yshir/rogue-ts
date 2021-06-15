@@ -41,12 +41,14 @@ export class Monster extends Character {
         this.dungeon.moveCharacterTo(this, x, y);
       }
 
-      this.movementPoints -= 1;
+      this.movementPoints--;
     }
 
     if (this.actionPoints > 0) {
-      // do something
-      this.actionPoints -= 1;
+      if (this.dungeon.distanceBetweenCharacters(this, this.dungeon.player) <= 2) {
+        this.dungeon.attackCharacter(this, this.dungeon.player);
+      }
+      this.actionPoints--;
     }
   }
 

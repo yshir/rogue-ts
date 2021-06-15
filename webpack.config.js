@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 
 /** @type {import('webpack').Configuration} */
@@ -10,7 +10,11 @@ const config = {
   },
   module: {
     rules: [
-      { test: /\.ts$/, loader: 'ts-loader', exclude: '/node_modules/' },
+      {
+        test: /\.ts$/,
+        loader: 'ts-loader',
+        exclude: '/node_modules/',
+      },
       {
         test: /phaser\.js$/,
         loader: 'expose-loader',

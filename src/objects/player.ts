@@ -34,31 +34,40 @@ export class Player extends Character {
 
     if (this.movementPoints > 0) {
       if (this.cursors.left.isDown) {
-        newX -= 1;
+        newX--;
         moved = true;
       }
       if (this.cursors.right.isDown) {
-        newX += 1;
+        newX++;
         moved = true;
       }
       if (this.cursors.up.isDown) {
-        newY -= 1;
+        newY--;
         moved = true;
       }
       if (this.cursors.down.isDown) {
-        newY += 1;
+        newY++;
         moved = true;
       }
 
       if (moved) {
-        this.movementPoints -= 1;
+        this.movementPoints--;
         if (!this.dungeon.isWalkableTile(newX, newY)) {
+          const enemy = this.dungeon.characterAtTile(newX, newY);
+          if (enemy && this.actionPoints > 0) {
+            this.dungeon.attackCharacter(this, enemy);
+            this.actionPoints--;
+          }
           newX = oldX;
           newY = oldY;
         }
         if (newX !== oldX || newY !== oldY) {
           this.dungeon.moveCharacterTo(this, newX, newY);
         }
+      }
+
+      if (this.healthPoints <= 6) {
+        this.sprite!.tint = Phaser.Display.Color.GetColor(255, 0, 0);
       }
     }
   }

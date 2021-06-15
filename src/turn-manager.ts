@@ -1,8 +1,8 @@
 import { Character } from '@src/objects/character';
 
 export class TurnManager {
-  private readonly characters: Set<Character>;
   private currentIdx: number;
+  public readonly characters: Set<Character>;
 
   constructor() {
     this.characters = new Set();

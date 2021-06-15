@@ -1,3 +1,5 @@
+import PF, { DiagonalMovement } from 'pathfinding';
+
 import { FLOOR1 } from '@src/data/floor1';
 import { TILE_SIZE } from '@src/data/tileset-meta';
 import { Floor } from '@src/objects/floor';
@@ -56,6 +58,12 @@ export class Dungeon {
     this.turnManager.addCharacter(character);
   }
 
+  public removeCharacter(character: Character): void {
+    this.turnManager.characters.delete(character);
+    character.sprite?.destroy();
+    character.onDestroy();
+  }
+
   public moveCharacterTo(character: Character, x: number, y: number): void {
     character.moving = true;
     this.scene.tweens.add({
@@ -73,6 +81,62 @@ export class Dungeon {
   }
 
   public isWalkableTile(x: number, y: number): boolean {
+    // check character
+    for (const c of this.turnManager.characters) {
+      if (c.x === x && c.y === y) {
+        return false;
+      }
+    }
+    // check tile
     return this.floor.isWalkableTile(x, y);
+  }
+
+  public characterAtTile(x: number, y: number): Character | null {
+    const characters = [...this.turnManager.characters];
+    for (const c of characters) {
+      if (c.x === x && c.y === y) {
+        return c;
+      }
+    }
+    return null;
+  }
+
+  public distanceBetweenCharacters(c1: Character, c2: Character): number {
+    const grid = new PF.Grid(this.floor.toPathfindingMatrix());
+    const finder = new PF.AStarFinder({ diagonalMovement: DiagonalMovement.Always });
+    const path = finder.findPath(c1.x, c1.y, c2.x, c2.y, grid);
+    if (path.length >= 2) {
+      return path.length;
+    }
+    throw new Error('pathfinding error');
+  }
+
+  public attackCharacter(attacker: Character, victim: Character): void {
+    attacker.moving = true;
+    attacker.tweens++;
+
+    this.scene.tweens.add({
+      targets: attacker.sprite,
+      onComplete: () => {
+        attacker.sprite!.x = this.tilemapLayer.tileToWorldX(attacker.x);
+        attacker.sprite!.y = this.tilemapLayer.tileToWorldY(attacker.y);
+        attacker.moving = false;
+        attacker.tweens -= 1;
+
+        const damage = attacker.attack();
+        victim.healthPoints -= damage;
+        console.log(`${attacker.name} does ${damage} damage to ${victim.name}`);
+        if (victim.healthPoints <= 0) {
+          this.removeCharacter(victim);
+        }
+      },
+      x: this.tilemapLayer.tileToWorldX(victim.x),
+      y: this.tilemapLayer.tileToWorldY(victim.y),
+      ease: 'Power2',
+      hold: 20,
+      duration: 80,
+      delay: attacker.tweens * 200,
+      yoyo: true,
+    });
   }
 }

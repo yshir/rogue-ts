@@ -15,6 +15,7 @@ const config = {
   root: true,
   rules: {
     '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    '@typescript-eslint/no-non-null-assertion': 'off',
   },
 };
 
