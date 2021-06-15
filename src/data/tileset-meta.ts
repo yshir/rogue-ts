@@ -1,5 +1,5 @@
 export const FRAME = {
-  tile: 0,
+  floor: 0,
   wall: 554,
   player: 29,
   monster: 26,

@@ -23,7 +23,7 @@ export class Floor {
   }
 
   public toTilemapData(): number[][] {
-    return this.data.map(row => row.map(col => (col === Floor.FLOOR_TILE ? FRAME.tile : FRAME.wall)));
+    return this.data.map(row => row.map(col => (col === Floor.FLOOR_TILE ? FRAME.floor : FRAME.wall)));
   }
 
   public toPathfindingMatrix(): number[][] {
