@@ -1,7 +1,7 @@
 import { WorldScene } from './world-scene';
 
 export class BootScene extends Phaser.Scene {
-  public static KEY = 'BootScene';
+  public static readonly KEY = 'BootScene';
 
   constructor() {
     super({ key: BootScene.KEY });

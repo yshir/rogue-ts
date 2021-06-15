@@ -11,7 +11,7 @@ const config: Phaser.Types.Core.GameConfig = {
   parent: 'game',
   width: 80 * 16,
   height: 50 * 16,
-  backgroundColor: '#000',
+  backgroundColor: '#472d3c',
   pixelArt: true,
   physics: {
     default: 'arcade',
@@ -20,6 +20,7 @@ const config: Phaser.Types.Core.GameConfig = {
       debug: isDebugMode,
     },
   },
+  zoom: 1,
   scene: scenes,
 };
 

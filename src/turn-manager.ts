@@ -1,12 +1,22 @@
 import { Character } from '@src/objects/character';
 
 export class TurnManager {
+  private static _instance?: TurnManager;
+
   private currentIdx: number;
+
   public readonly characters: Set<Character>;
 
   constructor() {
     this.characters = new Set();
     this.currentIdx = 0;
+  }
+
+  static get instance(): TurnManager {
+    if (!this._instance) {
+      this._instance = new TurnManager();
+    }
+    return this._instance;
   }
 
   addCharacter(character: Character): void {

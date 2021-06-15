@@ -2,27 +2,42 @@ import PF, { DiagonalMovement } from 'pathfinding';
 
 import { FLOOR1 } from '@src/data/floor1';
 import { TILE_SIZE } from '@src/data/tileset-meta';
+import { Character } from '@src/objects/character';
 import { Floor } from '@src/objects/floor';
+import { Monster } from '@src/objects/monster';
+import { Player } from '@src/objects/player';
 import { TurnManager } from '@src/turn-manager';
 
-import { Character } from './character';
-import { Monster } from './monster';
-import { Player } from './player';
-
 export class Dungeon {
+  private static _instance?: Dungeon;
+
   public readonly scene: Phaser.Scene;
   public readonly tilemapLayer: Phaser.Tilemaps.TilemapLayer;
-  public readonly turnManager: TurnManager;
   public readonly player: Player;
   public readonly floor: Floor;
+  public readonly messages: string[];
 
-  constructor(scene: Phaser.Scene, turnManager: TurnManager) {
+  private constructor(scene: Phaser.Scene) {
+    Dungeon._instance = this;
     this.scene = scene;
     this.floor = new Floor(FLOOR1);
-    this.turnManager = turnManager;
-
     this.tilemapLayer = this.createTilemapLayer();
     this.player = this.createPlayer(15, 15, 'Player');
+    this.messages = [];
+  }
+
+  public static get instance(): Dungeon {
+    if (!this._instance) {
+      throw new Error('Dungeon not initialized');
+    }
+    return this._instance;
+  }
+
+  public static initialize(scene: Phaser.Scene): void {
+    if (this._instance) {
+      throw new Error('Dungeon already initialized');
+    }
+    new Dungeon(scene);
   }
 
   public createTilemapLayer(): Phaser.Tilemaps.TilemapLayer {
@@ -36,13 +51,13 @@ export class Dungeon {
   }
 
   public createPlayer(x: number, y: number, name: string): Player {
-    const player = new Player(this, x, y, name);
+    const player = new Player(x, y, name);
     this.setCharacter(player);
     return player;
   }
 
   public createMonster(x: number, y: number, name: string): Monster {
-    const monster = new Monster(this, x, y, name);
+    const monster = new Monster(x, y, name);
     this.setCharacter(monster);
     return monster;
   }
@@ -55,11 +70,11 @@ export class Dungeon {
     character.sprite.setOrigin(0);
 
     // register to turn manager
-    this.turnManager.addCharacter(character);
+    TurnManager.instance.addCharacter(character);
   }
 
   public removeCharacter(character: Character): void {
-    this.turnManager.characters.delete(character);
+    TurnManager.instance.characters.delete(character);
     character.sprite?.destroy();
     character.onDestroy();
   }
@@ -82,7 +97,7 @@ export class Dungeon {
 
   public isWalkableTile(x: number, y: number): boolean {
     // check character
-    for (const c of this.turnManager.characters) {
+    for (const c of TurnManager.instance.characters) {
       if (c.x === x && c.y === y) {
         return false;
       }
@@ -92,7 +107,7 @@ export class Dungeon {
   }
 
   public characterAtTile(x: number, y: number): Character | null {
-    const characters = [...this.turnManager.characters];
+    const characters = [...TurnManager.instance.characters];
     for (const c of characters) {
       if (c.x === x && c.y === y) {
         return c;
@@ -125,7 +140,7 @@ export class Dungeon {
 
         const damage = attacker.attack();
         victim.healthPoints -= damage;
-        console.log(`${attacker.name} does ${damage} damage to ${victim.name}`);
+        this.log(`${attacker.name} does ${damage} damage to ${victim.name}`);
         if (victim.healthPoints <= 0) {
           this.removeCharacter(victim);
         }
@@ -138,5 +153,10 @@ export class Dungeon {
       delay: attacker.tweens * 200,
       yoyo: true,
     });
+  }
+
+  public log(text: string): void {
+    this.messages.unshift(text);
+    this.messages.slice(0, 8);
   }
 }

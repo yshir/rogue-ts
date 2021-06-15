@@ -1,8 +1,4 @@
-import { Dungeon } from '@src/objects/dungeon';
-
 export abstract class Character {
-  protected readonly dungeon: Dungeon;
-
   public x: number;
   public y: number;
   public frame: number;
@@ -13,6 +9,11 @@ export abstract class Character {
   public moving: boolean;
   public tweens: number;
   public sprite?: Phaser.GameObjects.Sprite;
+
+  public UISprite?: Phaser.GameObjects.Sprite;
+
+  // UI
+  abstract createUI(opts: { scene: Phaser.Scene; x: number; y: number; width: number }): number;
 
   // turn
   abstract refresh(): void;
@@ -26,7 +27,6 @@ export abstract class Character {
   abstract onDestroy(): void;
 
   constructor({
-    dungeon,
     x,
     y,
     frame,
@@ -35,7 +35,6 @@ export abstract class Character {
     actionPoints,
     healthPoints,
   }: {
-    dungeon: Dungeon;
     x: number;
     y: number;
     frame: number;
@@ -44,7 +43,6 @@ export abstract class Character {
     actionPoints: number;
     healthPoints: number;
   }) {
-    this.dungeon = dungeon;
     this.x = x;
     this.y = y;
     this.frame = frame;
