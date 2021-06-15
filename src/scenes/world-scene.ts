@@ -21,8 +21,8 @@ export class WorldScene extends Phaser.Scene {
     const cursors = this.input.keyboard.createCursorKeys();
 
     const dungeon = new Dungeon(this);
-    const player = new Player(cursors, dungeon, 15, 15);
-    const monster = new Monster(dungeon, 70, 8);
+    const player = new Player(cursors, dungeon, 15, 15, 'Player');
+    const monster = new Monster(dungeon, 70, 8, 'Skelton');
 
     this.turnManager.addCharacter(player);
     this.turnManager.addCharacter(monster);

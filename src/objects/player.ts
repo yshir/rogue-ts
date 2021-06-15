@@ -6,27 +6,37 @@ export class Player extends Character {
   private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
   private dungeon: Dungeon;
   private movementPoints: number;
+  // private actionPoints: number;
+  // private healthPoints: number;
 
-  constructor(cursors: Phaser.Types.Input.Keyboard.CursorKeys, dungeon: Dungeon, x: number, y: number) {
+  public name: string;
+
+  constructor(cursors: Phaser.Types.Input.Keyboard.CursorKeys, dungeon: Dungeon, x: number, y: number, name: string) {
     super(x, y, FRAME.player);
 
     this.cursors = cursors;
     this.dungeon = dungeon;
+    this.name = name;
     this.movementPoints = 1;
+    // this.actionPoints = 1;
+    // this.healthPoints = 15;
 
     this.dungeon.setPlayer(this);
   }
 
   refresh(): void {
     this.movementPoints = 1;
+    // this.actionPoints = 1;
   }
 
   turn(): void {
+    const oldX = this.x;
+    const oldY = this.x;
     let newX = this.x;
     let newY = this.y;
     let moved = false;
 
-    if (this.movementPoints > 0 && !this.moving) {
+    if (this.movementPoints > 0) {
       if (this.cursors.left.isDown) {
         newX -= 1;
         moved = true;
@@ -43,7 +53,11 @@ export class Player extends Character {
 
       if (moved) {
         this.movementPoints -= 1;
-        if (this.dungeon.isWalkable(newX, newY)) {
+        if (!this.dungeon.isWalkable(newX, newY)) {
+          newX = oldX;
+          newY = oldY;
+        }
+        if (newX !== oldX || newY !== oldY) {
           this.dungeon.moveCharacterTo(this, newX, newY);
         }
       }
@@ -52,5 +66,14 @@ export class Player extends Character {
 
   over(): boolean {
     return this.movementPoints === 0 && !this.moving;
+  }
+
+  attack(): number {
+    return 1;
+  }
+
+  onDestroy(): void {
+    alert('You died');
+    location.reload();
   }
 }
